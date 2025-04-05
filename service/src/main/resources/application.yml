@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://gringotts:goldenkey123@localhost:27017/personalInfoDB?authSource=admin
+      auto-index-creation: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    topics:
+      customer-events: customer-lifecycle-events
+
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: DEBUG
