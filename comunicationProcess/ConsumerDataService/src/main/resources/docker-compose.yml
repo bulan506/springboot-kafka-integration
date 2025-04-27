@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mongo-consumer:
+    image: mongo:latest
+    container_name: mongo-consumer
+    networks:
+      - mongo-consumer-net
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gringotts
+      MONGO_INITDB_ROOT_PASSWORD: goldenkey123
+      MONGO_INITDB_DATABASE: GringottsBank_Consumer
+networks:
+  mongo-consumer-net:
+    driver: bridge
+
+volumes:
+  mongo_consumer_data:

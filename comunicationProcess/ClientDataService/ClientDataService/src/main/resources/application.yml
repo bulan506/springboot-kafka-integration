@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: ClientDataService
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: GringottsBank_Producer
+      username: gringotts
+      password: goldenkey123
+      authentication-database: admin
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+topic:
+  client:
+    name: clients3
