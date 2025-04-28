@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ClientDataService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ClientDataService.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.gringottsbank.ClientDataService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.gringottsbank.ClientDataService.main.iml" />
     </modules>
   </component>
 </project>

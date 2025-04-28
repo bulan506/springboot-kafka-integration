@@ -5,6 +5,4 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ClientSavedEvent extends Event<Client> {
-
-}
+public class ClientSavedEvent extends Event<Client> {}

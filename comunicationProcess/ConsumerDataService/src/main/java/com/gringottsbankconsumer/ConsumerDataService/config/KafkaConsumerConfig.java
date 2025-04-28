@@ -1,6 +1,7 @@
 package com.gringottsbankconsumer.ConsumerDataService.config;
 
 import com.gringottsbankconsumer.ConsumerDataService.events.ClientSavedEvent;
+import com.gringottsbankconsumer.ConsumerDataService.events.Event;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,8 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
-        JsonDeserializer<ClientSavedEvent> deserializer = new JsonDeserializer<>(ClientSavedEvent.class, false);
+
+        JsonDeserializer<ClientSavedEvent> deserializer = new JsonDeserializer<>(Event.class, false);
         deserializer.setUseTypeMapperForKey(false);
         deserializer.setRemoveTypeHeaders(true);
         deserializer.addTrustedPackages("*");

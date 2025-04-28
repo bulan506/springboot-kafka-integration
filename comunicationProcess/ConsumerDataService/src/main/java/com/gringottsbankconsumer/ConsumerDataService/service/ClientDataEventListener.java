@@ -1,6 +1,9 @@
 package com.gringottsbankconsumer.ConsumerDataService.service;
 
+import com.gringottsbankconsumer.ConsumerDataService.events.AddressChangedEvent;
 import com.gringottsbankconsumer.ConsumerDataService.events.ClientSavedEvent;
+import com.gringottsbankconsumer.ConsumerDataService.events.Event;
+import com.gringottsbankconsumer.ConsumerDataService.model.AddressChangeData;
 import com.gringottsbankconsumer.ConsumerDataService.model.Client;
 import com.gringottsbankconsumer.ConsumerDataService.repository.ClientRepository;
 import org.slf4j.Logger;
@@ -17,11 +20,33 @@ public class ClientDataEventListener {
 
     @Autowired
     private ClientRepository clientRepository;
-
+    @Autowired
+    private AddressUpdateService addressUpdateService;
     @KafkaListener(topics = "clients3", groupId = "grupo2")
-    public void handleClientSavedEvent(ClientSavedEvent event) {
+    public void handleEvent(Event<?> event) {
+
+        switch(event.getEventType()) {
+            case CREATED:
+                handleClientSavedEvent((ClientSavedEvent) event);
+                break;
+            case UPDATED:
+                handleAddressChangedEvent((AddressChangedEvent) event);
+                break;
+            default:
+                logger.warn("Unknown event type: {}", event.getEventType());
+        }
+    }
+
+    private void handleClientSavedEvent(ClientSavedEvent event) {
         Client client = event.getData();
         clientRepository.save(client);
         logger.info("Client saved successfully with ID: {}", client.getId());
     }
+
+    private void handleAddressChangedEvent(AddressChangedEvent event) {
+        AddressChangeData addressData = event.getData();
+        addressUpdateService.updateClientAddress(addressData);
+        logger.info("Address changed for client ID: {}", addressData.getClientId());
+    }
+
 }

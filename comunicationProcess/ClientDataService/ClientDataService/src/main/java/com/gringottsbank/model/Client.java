@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Clients")
+@Document(collection = "Clients_General")
 public class Client {
     @Id
     private String id;
@@ -23,9 +25,5 @@ public class Client {
     private String accountNumber;
     private String accountType;
     private String accountStatus;
-    private String addresses;
-    private String data;
-    //TODO -- QUITAR EL DATA
-    private String flooNetworkId;
-
+    private List<Address> addresses;
 }
