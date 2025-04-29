@@ -16,6 +16,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -53,11 +54,10 @@ public class ClientEventsService {
         });
     }
 
-    public void publishAddressChanged(String clientId, Address newAddress, Address oldAddress) {
+    public void publishAddressChanged(String clientId, List<Address> newAddress) {
         AddressChangeData addressChangeData = new AddressChangeData();
         addressChangeData.setClientId(clientId);
         addressChangeData.setNewAddress(newAddress);
-        addressChangeData.setOldAddress(oldAddress);
         AddressChangedEvent event = new AddressChangedEvent();
         event.setEventId(UUID.randomUUID().toString());
         event.setTimestamp(Instant.now().toString());

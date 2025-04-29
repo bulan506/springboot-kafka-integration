@@ -7,6 +7,7 @@ import com.gringottsbank.service.events.ClientEventsService;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,17 +24,17 @@ public class ClientService {
         clientEventsService.publishClientCreated(client);
     }
 
+    @Transactional
     public void updateAddresses(String clientId, List<Address> newAddresses) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found with ID: " + clientId));
-        Address oldAddress = client.getAddresses() != null && !client.getAddresses().isEmpty()
-                ? client.getAddresses().get(0)
-                : null;
+
         client.setAddresses(newAddresses);
+        clientRepository.save(client);
         clientEventsService.publishAddressChanged(
                 clientId,
-                newAddresses.get(0),
-                oldAddress
+                newAddresses
         );
     }
 }
+

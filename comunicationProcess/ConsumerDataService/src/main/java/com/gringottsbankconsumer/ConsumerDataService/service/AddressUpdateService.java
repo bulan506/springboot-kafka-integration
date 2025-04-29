@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AddressUpdateService {
@@ -24,36 +23,18 @@ public class AddressUpdateService {
                 .orElseThrow(() -> new RuntimeException("Client not found with ID: " + addressData.getClientId()));
 
         validateAddressData(addressData);
-        updateAddresses(client, addressData.getNewAddress(), addressData.getOldAddress());
+        updateAddresses(client, addressData.getNewAddress());
         clientRepository.save(client);
         logger.info("Address updated for client ID: {}", addressData.getClientId());
     }
 
     private void validateAddressData(AddressChangeData addressData) {
-        if (addressData.getNewAddress() == null) {
+        if (addressData.getNewAddress() == null  ) {
             throw new IllegalArgumentException("New address cannot be null");
         }
     }
 
-    private void updateAddresses(Client client, Address newAddress, Address oldAddress) {
-        if (client.getAddresses() == null) {
-            client.setAddresses(new ArrayList<>());
-        }
-
-        if (oldAddress != null) {
-            boolean replaced = false;
-            for (int i = 0; i < client.getAddresses().size(); i++) {
-                if (client.getAddresses().get(i).equals(oldAddress)) {
-                    client.getAddresses().set(i, newAddress);
-                    replaced = true;
-                    break;
-                }
-            }
-            if (!replaced) {
-                client.getAddresses().add(newAddress);
-            }
-        } else {
-            client.getAddresses().add(newAddress);
-        }
+    private void updateAddresses(Client client, List<Address> newAddresses) {
+        client.setAddresses(newAddresses);
     }
 }
