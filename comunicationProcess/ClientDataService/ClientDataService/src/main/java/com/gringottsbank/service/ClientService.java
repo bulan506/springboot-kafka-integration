@@ -28,7 +28,7 @@ public class ClientService {
             throw BaseException
                     .exceptionBuilder()
                     .code(500)
-                    .message("Error occurred while saving client: " + e.getMessage())
+                    .message("Error occurred while saving client: " + e.getMessage()+" trace"+ e.fillInStackTrace())
                     .build();
         }
     }
