@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: ConsumerDataService
+  data:
+    mongodb:
+      host: localhost
+      port: 27018
+      database: GringottsBank_Consumer
+      username: gringotts
+      password: goldenkey123
+      authentication-database: admin
+  kafka:
+    bootstrap-servers: localhost:9092
+
+topic:
+  client:
+    name: clients3
