@@ -18,3 +18,12 @@ spring:
 topic:
   client:
     name: clients3
+
+server:
+  port: 8081
+
+logging:
+  file:
+    name: ../../logs/producer.log
+  pattern:
+    file: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss}","level":"%p","service":"ClientDataService","thread":"%t","logger":"%c","message":"%m"}%n'

@@ -42,10 +42,10 @@ public class ClientEventsService {
 
         future.whenComplete((result, ex) -> {
             if (ex != null) {
-                log.error("❌ Failed to send event to Kafka. Topic: {}, Event ID: {}",
+                log.error("Failed to send event to Kafka. Topic: {}, Event ID: {}",
                         topicClient, event.getEventId(), ex);
             } else {
-                log.info("✅ Successfully sent event to Kafka. Topic: {}, Partition: {}, Offset: {}, Event ID: {}",
+                log.info("Successfully sent event to Kafka. Topic: {}, Partition: {}, Offset: {}, Event ID: {}",
                         topicClient,
                         result.getRecordMetadata().partition(),
                         result.getRecordMetadata().offset(),
