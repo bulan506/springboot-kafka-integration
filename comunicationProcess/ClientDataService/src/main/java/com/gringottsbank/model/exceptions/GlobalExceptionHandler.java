@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(500)
                 .body(new ErrorResponse(
-                        "INTERNAL SERVER ERROR",
+                        "INTERNAL SERVER ERROR" + ex,
                         500));
     }
 

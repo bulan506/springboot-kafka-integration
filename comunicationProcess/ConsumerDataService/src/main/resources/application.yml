@@ -15,3 +15,12 @@ spring:
 topic:
   client:
     name: clients3
+
+server:
+  port: 8082
+
+logging:
+  file:
+    name: ./logs/consumer.log
+  pattern:
+    file: '{"timestamp":"%d{yyyy-MM-dd HH:mm:ss}","level":"%p","service":"ConsumerDataService","thread":"%t","logger":"%c","message":"%m"}%n'
