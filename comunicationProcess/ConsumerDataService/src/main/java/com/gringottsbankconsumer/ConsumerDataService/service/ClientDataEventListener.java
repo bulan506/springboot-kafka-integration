@@ -11,6 +11,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 
 @Service
 public class ClientDataEventListener {
@@ -37,11 +39,23 @@ public class ClientDataEventListener {
 
     private void handleClientSavedEvent(ClientSavedEvent event) {
         Client client = event.getData();
+        Optional<Client> existingClient = clientRepository.findById(client.getId());
+        if(existingClient.isPresent() &&
+                event.getEventId().equals(existingClient.get().getLastEventId())) {
+            logger.warn("CREATED event has already been processed (ID: {}), ignoring...", event.getEventId());
+            return;
+        }
         clientRepository.save(client);
         logger.info("Client saved successfully with ID: {}", client.getId());
     }
 
     private void handleAddressChangedEvent(AddressChangedEvent event) {
+        Optional<Client> existingClient = clientRepository.findById(event.getData().getClientId());
+        if(existingClient.isPresent() &&
+                event.getEventId().equals(existingClient.get().getLastEventId())) {
+            logger.warn("UPDATED event has already been processed (ID: {}), ignoring...", event.getEventId());
+            return;
+        }
         AddressChangeData addressData = event.getData();
         addressUpdateService.updateClientAddress(addressData);
         logger.info("Address changed for client ID: {}", addressData.getClientId());

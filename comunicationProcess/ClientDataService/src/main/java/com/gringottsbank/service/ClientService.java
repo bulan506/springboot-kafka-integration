@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ClientService {
@@ -53,6 +55,8 @@ public class ClientService {
             if (client.getId() == null || client.getId().isBlank()) {
                 client.setId(null); // MongoDB generará un ObjectId automáticamente
             }
+            client.setLastEventId(UUID.randomUUID().toString());
+            client.setLastModified(LocalDateTime.now().toString());
             clientRepository.save(client);
             clientEventsService.publishClientCreated(client);
 
@@ -74,6 +78,8 @@ public class ClientService {
                             .message("Client not found with ID: " + clientId)
                             .build());
             client.setAddresses(newAddresses);
+            client.setLastEventId(UUID.randomUUID().toString());
+            client.setLastModified(LocalDateTime.now().toString());
             clientRepository.save(client);
             clientEventsService.publishAddressChanged(clientId, newAddresses);
         } catch (BaseException e) {

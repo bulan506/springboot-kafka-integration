@@ -25,4 +25,6 @@ public class Client {
     private String accountType;
     private String accountStatus;
     private List<Address> addresses;
+    private String lastModified;
+    private String lastEventId;
 }
