@@ -20,10 +20,44 @@ public class ClientService {
     @Autowired
     private ClientEventsService clientEventsService;
 
-    public void saveClient(Client client) throws MongoException{
+    public void saveClient(Client client) throws MongoException {
         try {
+            if (clientRepository.existsById(client.getId())) {
+                throw BaseException
+                        .exceptionBuilder()
+                        .code(409)
+                        .message("Client already exists with ID: " + client.getId())
+                        .build();
+            }
+            if (client.getEmail() == null || client.getEmail().isBlank()) {
+                throw BaseException
+                        .exceptionBuilder()
+                        .code(400)
+                        .message("Email is required")
+                        .build();
+            }
+            if (client.getName() == null || client.getName().isBlank()) {
+                throw BaseException
+                        .exceptionBuilder()
+                        .code(400)
+                        .message("Name is required")
+                        .build();
+            }
+            if (client.getPassword() == null || client.getPassword().isBlank()) {
+                throw BaseException
+                        .exceptionBuilder()
+                        .code(400)
+                        .message("Password is required")
+                        .build();
+            }
+            if (client.getId() == null || client.getId().isBlank()) {
+                client.setId(null); // MongoDB generará un ObjectId automáticamente
+            }
             clientRepository.save(client);
             clientEventsService.publishClientCreated(client);
+
+        } catch (BaseException e) {
+            throw e;
         } catch (Exception e) {
             throw BaseException
                     .exceptionBuilder()
@@ -32,8 +66,6 @@ public class ClientService {
                     .build();
         }
     }
-
-    @Transactional
     public void updateAddresses(String clientId, List<Address> newAddresses) {
         try {
             Client client = clientRepository.findById(clientId)

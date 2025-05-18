@@ -21,7 +21,6 @@ public class ClientController {
 
     @PostMapping("/saveClient")
     public ResponseEntity<ApiResponse> saveClient(@RequestBody Client client){
-            Map<String, Object> response = new HashMap<>();
             clientService.saveClient(client);
             return ResponseEntity.ok(new ApiResponse(200, "Client added successfully"));
     }

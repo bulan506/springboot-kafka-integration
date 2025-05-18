@@ -1,14 +1,13 @@
 package com.gringottsbankconsumer.ConsumerDataService.service;
 
-import com.gringottsbankconsumer.ConsumerDataService.events.AddressChangedEvent;
-import com.gringottsbankconsumer.ConsumerDataService.events.ClientSavedEvent;
-import com.gringottsbankconsumer.ConsumerDataService.events.Event;
+import com.gringottsbankconsumer.ConsumerDataService.events.*;
 import com.gringottsbankconsumer.ConsumerDataService.model.AddressChangeData;
 import com.gringottsbankconsumer.ConsumerDataService.model.Client;
 import com.gringottsbankconsumer.ConsumerDataService.repository.ClientRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ClientDataEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDataEventListener.class);
-
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
