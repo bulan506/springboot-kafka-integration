@@ -1,9 +1,6 @@
 package com.gringottsbank.service.events;
 
-import com.gringottsbank.events.AddressChangedEvent;
-import com.gringottsbank.events.ClientSavedEvent;
-import com.gringottsbank.events.Event;
-import com.gringottsbank.events.EventType;
+import com.gringottsbank.events.*;
 import com.gringottsbank.model.Address;
 import com.gringottsbank.model.AddressChangeData;
 import com.gringottsbank.model.Client;
@@ -11,14 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class ClientEventsService {
@@ -69,10 +69,10 @@ public class ClientEventsService {
 
         future.whenComplete((result, ex) -> {
             if (ex != null) {
-                log.error("❌ Failed to send event to Kafka. Topic: {}, Event ID: {}",
+                log.error("Failed to send event to Kafka. Topic: {}, Event ID: {}",
                         topicClient, event.getEventId(), ex);
             } else {
-                log.info("✅ Successfully sent change address event to Kafka. Topic: {}, Partition: {}, Offset: {}, Event ID: {}",
+                log.info("Successfully sent change address event to Kafka. Topic: {}, Partition: {}, Offset: {}, Event ID: {}",
                         topicClient,
                         result.getRecordMetadata().partition(),
                         result.getRecordMetadata().offset(),
