@@ -45,8 +45,8 @@ public class ClientEventsService {
                 log.error("Failed to send event to Kafka. Topic: {}, Event ID: {}",
                         topicClient, event.getEventId(), ex);
             } else {
-                log.info("Successfully sent event to Kafka. Topic: {}, Partition: {}, Offset: {}, Event ID: {}",
-                        topicClient,
+                log.info("Successfully sent event to Kafka. Topic: {}, Client ID: {} ,Partition: {}, Offset: {}, Event ID: {}",
+                        topicClient,client.getId(),
                         result.getRecordMetadata().partition(),
                         result.getRecordMetadata().offset(),
                         event.getEventId());
